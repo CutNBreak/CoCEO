@@ -1,0 +1,68 @@
+{
+    "components": {
+        "browser": {
+            "dependencies": ["vision", "ai", "mouse", "keyboard"],
+            "resources": ["screenshots", "downloads"],
+            "state": ["page_state", "dom_state"]
+        },
+        "vision": {
+            "dependencies": ["ai"],
+            "resources": ["image_processing", "models"],
+            "state": ["processing_state", "model_state"]
+        },
+        "terminal": {
+            "dependencies": ["os", "process"],
+            "resources": ["process_execution", "output_buffers"],
+            "state": ["command_history", "environment"]
+        },
+        "input_control": {
+            "dependencies": ["os", "display"],
+            "resources": ["event_simulation"],
+            "state": ["input_state", "modifier_keys"]
+        },
+        "display": {
+            "dependencies": ["os", "window"],
+            "resources": ["screen_capture", "window_management"],
+            "state": ["display_config", "window_state"]
+        },
+        "os": {
+            "dependencies": [],
+            "resources": ["system_api", "file_system"],
+            "state": ["system_state", "environment_vars"]
+        }
+    },
+    "relationships": {
+        "browser_vision": {
+            "type": "bidirectional",
+            "strength": "high",
+            "description": "Vision system analyzes browser content"
+        },
+        "terminal_os": {
+            "type": "bidirectional",
+            "strength": "high",
+            "description": "Terminal executes OS commands"
+        },
+        "display_os": {
+            "type": "bidirectional",
+            "strength": "high",
+            "description": "Display manages OS windows"
+        }
+    },
+    "resources": {
+        "file_system": {
+            "type": "shared",
+            "access": ["browser", "terminal", "os"],
+            "conflicts": "low"
+        },
+        "process": {
+            "type": "managed",
+            "access": ["terminal", "os"],
+            "conflicts": "medium"
+        },
+        "memory": {
+            "type": "shared",
+            "access": ["all"],
+            "conflicts": "high"
+        }
+    }
+}

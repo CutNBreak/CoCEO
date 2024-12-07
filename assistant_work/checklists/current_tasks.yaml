@@ -1,0 +1,177 @@
+tasks:
+  BLOAT-1:
+    title: Code Bloat Analysis
+    description: Identify and document code bloat and cleanup opportunities
+    status: DONE
+    priority: P1
+    subtasks:
+      - ✓ Analyze browser system bloat
+      - ✓ Analyze vision system bloat
+      - ✓ Analyze terminal system bloat
+      - ✓ Analyze resource management bloat
+      - ✓ Analyze state management bloat
+      - ✓ Document cleanup recommendations
+    references:
+      - analysis/code_bloat_analysis.md
+      - analysis/cleanup_plan.md
+
+  REMOVE-1:
+    title: File Removal Analysis
+    description: Identify files for safe removal
+    status: DONE
+    priority: P1
+    subtasks:
+      - ✓ Analyze browser system files
+      - ✓ Analyze vision system files
+      - ✓ Analyze terminal system files
+      - ✓ Analyze resource files
+      - ✓ Analyze state management files
+      - ✓ Document removal plan
+    references:
+      - analysis/file_removal_analysis.md
+
+  REMOVE-2:
+    title: Browser System File Removal
+    description: Remove unused browser system files
+    status: TODO
+    priority: P1
+    dependencies: [REMOVE-1]
+    subtasks:
+      - Back up browser_next.py
+      - Remove browser_next.py
+      - Remove deprecated_selenium.py
+      - Verify system stability
+    references:
+      - analysis/file_removal_analysis.md
+
+  REMOVE-3:
+    title: Vision System File Removal
+    description: Remove unused vision system files
+    status: TODO
+    priority: P1
+    dependencies: [REMOVE-1]
+    subtasks:
+      - Back up legacy_ocr.py
+      - Remove legacy_ocr.py
+      - Remove experimental directory
+      - Verify system stability
+    references:
+      - analysis/file_removal_analysis.md
+
+  REMOVE-4:
+    title: Terminal System File Removal
+    description: Remove unused terminal system files
+    status: TODO
+    priority: P1
+    dependencies: [REMOVE-1]
+    subtasks:
+      - Back up unused language files
+      - Remove ruby.py and r.py
+      - Remove archived servers
+      - Update language list
+    references:
+      - analysis/file_removal_analysis.md
+
+  REMOVE-5:
+    title: Resource Management File Removal
+    description: Remove unused resource files
+    status: TODO
+    priority: P1
+    dependencies: [REMOVE-1]
+    subtasks:
+      - Back up legacy handlers
+      - Remove legacy handlers directory
+      - Remove unused_markdown.py
+      - Verify system stability
+    references:
+      - analysis/file_removal_analysis.md
+
+  REMOVE-6:
+    title: State Management File Removal
+    description: Remove unused state management files
+    status: TODO
+    priority: P1
+    dependencies: [REMOVE-1]
+    subtasks:
+      - Back up legacy state files
+      - Remove legacy_state directory
+      - Remove experimental directory
+      - Verify system stability
+    references:
+      - analysis/file_removal_analysis.md
+
+  CLEANUP-1:
+    title: Browser System Cleanup
+    description: Remove bloat from browser system
+    status: PENDING
+    priority: P1
+    dependencies: [REMOVE-2]
+    subtasks:
+      - Extract retry logic to utility
+      - Remove unused browser setup code
+      - Optimize navigation patterns
+      - Clean up state management
+    references:
+      - analysis/code_bloat_analysis.md
+
+  CLEANUP-2:
+    title: Vision System Cleanup
+    description: Remove bloat from vision system
+    status: PENDING
+    priority: P1
+    dependencies: [REMOVE-3]
+    subtasks:
+      - Optimize image processing
+      - Consolidate text processing
+      - Remove redundant transformations
+      - Clean up OCR processing
+    references:
+      - analysis/code_bloat_analysis.md
+
+  CLEANUP-3:
+    title: Terminal System Cleanup
+    description: Remove bloat from terminal system
+    status: PENDING
+    priority: P1
+    dependencies: [REMOVE-4]
+    subtasks:
+      - Implement lazy language loading
+      - Create shared output processing
+      - Clean up process management
+      - Optimize resource usage
+    references:
+      - analysis/code_bloat_analysis.md
+
+  CLEANUP-4:
+    title: Resource Management Cleanup
+    description: Remove bloat from resource management
+    status: PENDING
+    priority: P1
+    dependencies: [REMOVE-5]
+    subtasks:
+      - Centralize file operations
+      - Implement context managers
+      - Clean up resource tracking
+      - Optimize cleanup procedures
+    references:
+      - analysis/code_bloat_analysis.md
+
+  CLEANUP-5:
+    title: State Management Cleanup
+    description: Remove bloat from state management
+    status: PENDING
+    priority: P1
+    dependencies: [REMOVE-6]
+    subtasks:
+      - Simplify state tracking
+      - Implement event mapping
+      - Clean up synchronization
+      - Optimize event handling
+    references:
+      - analysis/code_bloat_analysis.md
+
+notes:
+  - Priority levels: P1 (High), P2 (Medium), P3 (Low)
+  - Status values: TODO, IN_PROGRESS, DONE, PENDING
+  - Complete file removal before starting cleanup
+  - Verify system stability after each removal

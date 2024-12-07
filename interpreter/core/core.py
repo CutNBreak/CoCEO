@@ -46,7 +46,7 @@ class OpenInterpreter:
         auto_run=False,
         verbose=False,
         debug=False,
-        max_output=2800,
+        max_output=200000,
         safe_mode="off",
         shrink_images=True,
         loop=False,

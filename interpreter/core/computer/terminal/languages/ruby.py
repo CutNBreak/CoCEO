@@ -1,60 +1,68 @@
-import re
-from pathlib import Path
+"""Ruby language support"""
+
+import subprocess
+
 from .subprocess_language import SubprocessLanguage
 
 
 class Ruby(SubprocessLanguage):
+    """Ruby programming language support"""
+
     file_extension = "rb"
     name = "Ruby"
 
     def __init__(self):
         super().__init__()
-        self.start_cmd = ["irb"] 
+        self.start_cmd = ["ruby"]
 
     def preprocess_code(self, code):
-        """
-        Add active line markers
-        Wrap in a tryCatch for better error handling 
-        Add end of execution marker
-        """
-
-        lines = code.split("\n")
-        processed_lines = []
-
-        for i, line in enumerate(lines, 1):
-            # Add active line print
-            processed_lines.append(f'puts "##active_line{i}##"')
-            processed_lines.append(line)
-        # Join lines to form the processed code
-        processed_code = "\n".join(processed_lines)
-
-        # Wrap in a tryCatch for error handling and add end of execution marker
-        processed_code = f"""
-begin
-  {processed_code}
-rescue => e
-  puts "##execution_error##\\n" + e.message
-ensure
-  puts "##end_of_execution##\\n"
-end
-"""
-        self.code_line_count = len(processed_code.split("\n"))
-        #print(processed_code)
+        """Add end of execution marker"""
+        # Add commands that tell us what line is being executed
+        processed_code = code
+        # Add end command (we'll be listening for this so we know when it ends)
+        processed_code += '\nputs "##end_of_execution##"'
         return processed_code
 
     def line_postprocessor(self, line):
-        # If the line count attribute is set and non-zero, decrement and skip the line
-        if hasattr(self, "code_line_count") and self.code_line_count > 0:
-            self.code_line_count -= 1
-            return None
-        if "nil" in line:
-           return None
+        """Process output lines"""
         return line
 
     def detect_active_line(self, line):
-        if "##active_line" in line:
-            return int(line.split("##active_line")[1].split("##")[0])
+        """Detect active line markers"""
         return None
 
     def detect_end_of_execution(self, line):
-        return "##end_of_execution##" in line or "##execution_error##" in line
+        """Detect end of execution marker"""
+        return "##end_of_execution##" in line
+
+    def is_installed(self):
+        """Check if Ruby is installed"""
+        try:
+            subprocess.run(
+                ["ruby", "--version"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=True,
+            )
+            return True
+        except (subprocess.SubprocessError, FileNotFoundError):
+            return False
+
+    def installed_version(self):
+        """Get the installed version of Ruby"""
+        try:
+            result = subprocess.run(
+                ["ruby", "--version"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=True,
+            )
+            # Ruby version info is in stdout
+            version_output = result.stdout
+            if version_output:
+                # Format: "ruby X.Y.Z..."
+                return version_output.split()[1]
+            return None
+        except (subprocess.SubprocessError, FileNotFoundError):
+            return None
